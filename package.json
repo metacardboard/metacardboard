@@ -1,0 +1,42 @@
+{
+  "name": "metacardboard",
+  "version": "0.0.0",
+  "description": "metacardboard WIP",
+  "main": "./dist/myawesomeproject.js",
+  "scripts": {
+    "test": "istanbul test --report html -x 'vendor/**' _mocha",
+    "test-travis": "istanbul cover -x 'vendor/**' _mocha -- -R spec;A=$?;cat coverage/lcov.info | coveralls;exit $A"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/amazing/project.git"
+  },
+  "author": "Amazing author",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/amazing/project/issues"
+  },
+  "homepage": "https://github.com/amazing/project",
+  "devDependencies": {
+    "coffee-script": "~1",
+    "mocha": "*",
+    "chai": "*",
+    "istanbul": "*",
+    "coveralls": "~2",
+    "webpack": "~1",
+    "gulp": "~3",
+    "gulp-util": "~2",
+    "gulp-uglify": "~0",
+    "gulp-watch": "~0",
+    "gulp-plumber": "~0",
+    "gulp-rename": "~1",
+    "coffee-loader": "~0",
+    "gulp-mocha": "~0.4.1",
+    "through2": "~0",
+    "gulp-coffee": "~1"
+  },
+  "engines": {
+    "node": ">=0.10",
+    "npm": ">=1.2.10"
+  }
+}
