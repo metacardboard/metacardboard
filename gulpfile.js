@@ -210,8 +210,7 @@ gulp.task('app', function(callback) {
         .pipe(through(function(file, _, cb) {
 
             stylus(file.contents.toString('utf8'))
-                // TODO: change this to dynamic
-                .set('filename', 'app.css')
+                .set('filename', path.basename(file.path))
                 .render(function(err, css){
 
                     if (err)
