@@ -1,3 +1,5 @@
+var path = require("path");
+
 module.exports = {
     module: {
         loaders: [
@@ -6,7 +8,7 @@ module.exports = {
     },
     entry: "./coffee/main.coffee",
     output: {
-        path: "./dist/",
+        path: path.join(__dirname, "dist"),
         filename: "metacardboard.js",
         library: "metacardboard",
         libraryTarget: "umd"

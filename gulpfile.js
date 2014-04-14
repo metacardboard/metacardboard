@@ -25,9 +25,14 @@ through = require('through2').obj,
 /** webpack **/
 webpack = require('webpack'),
 webpackconfig = require('./webpack.config'),
+webpackserver = require("webpack-dev-server"),
+
+jade = require('jade'),
+stylus = require('stylus'),
 
 /** Config **/
 srcCoffeeDir = './coffee/',
+srcAppDir = './app/',
 destDir = './src/',
 
 distDir = './dist/',
@@ -157,6 +162,70 @@ gulp.task('webpack', function(callback) {
 
     });
 
+    var myConfig = Object.create(webpackconfig);
+
+
+    new webpackserver(webpack(myConfig), {
+        stats: {
+            colors: true
+        }
+    }).listen(8080, "localhost", function(err) {
+        if(err) throw new gutil.PluginError("webpack-dev-server", err);
+        gutil.log("[webpack-dev-server]", "http://localhost:8080/webpack-dev-server/index.html");
+    });
+
+    return callback();
+
+});
+
+gulp.task('app', function(callback) {
+
+    var
+    jade_files = path.normalize(srcAppDir + '/**/*.jade');
+    stylus_files = path.normalize(srcAppDir + '/**/*.styl');
+
+    // jade processing (html)
+    getGlob(jade_files)
+        .pipe(plumber())
+        .pipe(through(function(file, _, cb) {
+
+            jade.render(file.contents.toString('utf8'), {}, function(err, html) {
+
+                if (err)
+                    return cb(err);
+
+                file.contents = new Buffer(html);
+
+                return cb(null, file);
+
+            });
+
+        }))
+        .pipe(rename({ extname: '.html'}))
+        .pipe(gulp.dest(srcAppDir));
+
+    // stylus processing (css)
+    getGlob(stylus_files)
+        .pipe(plumber())
+        .pipe(through(function(file, _, cb) {
+
+            stylus(file.contents.toString('utf8'))
+                // TODO: change this to dynamic
+                .set('filename', 'app.css')
+                .render(function(err, css){
+
+                    if (err)
+                        return cb(err);
+
+
+                    file.contents = new Buffer(css);
+
+                    return cb(null, file);
+                });
+        }))
+        .pipe(rename({ extname: '.css'}))
+        .pipe(gulp.dest(srcAppDir));
+
     return callback();
 
 });
@@ -165,7 +234,7 @@ gulp.task('webpack', function(callback) {
 /* Compose sub-tasks to orchestrate something to be done */
 
 /* Development task */
-gulp.task('dev', ['set-dev', 'coffee', 'webpack', 'mocha'], function() {
+gulp.task('dev', ['set-dev', 'coffee', 'webpack', 'mocha', 'app'], function() {
     // Run webpack based on config from webpack.config.js
 });
 
