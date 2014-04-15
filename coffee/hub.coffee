@@ -11,7 +11,8 @@ class Hub
 
         @connection = null
 
-    userDefaults: ()->
+    # goinstant specific
+    _userDefaults: ()->
 
         userdefaults = {}
         if(@roomName)
@@ -19,30 +20,29 @@ class Hub
 
         return userdefaults
 
-    room: ()->
-        return connection.room(@roomName)
+    _room: ()->
+        return @connection.room(@roomName)
 
-    user: ()->
-        return @room().self()
+    _user: ()->
+        return @_room().self()
 
     connect: ()->
 
-        return goinstant.connect(url, {user: @userDefaults()})
+        return goinstant.connect(url, {user: @_userDefaults()})
             .then (result)=>
 
 
-                @connection = connection = result.connection
+                @connection = result.connection
 
-                room = connection.room(@roomName)
+                room = @_room()
                 obj = {}
 
                 if(!room.joined())
-                    return room.join(@userDefaults()).then (room, user)=>
+                    return room.join(@_userDefaults()).then (room, user)=>
 
                         @_displayName = user.displayName
 
-
-                        obj.roomName = @roomName
+                        obj.room = room
                         obj.displayName = user.displayName
 
                         return obj
@@ -54,10 +54,8 @@ class Hub
 
                     @_displayName = user.displayName
 
-
-
                     # obj.users =
-                    obj.roomName = @roomName
+                    obj.room = room
                     obj.displayName = user.displayName
 
                     return obj
@@ -68,21 +66,23 @@ class Hub
             #         @connected = false;
             #     return;
 
-
     displayName: (_newName)->
 
         if(!!!_newName)
-            return @display_name
+            return @_displayName
 
         if(_newName.length <= 0)
             return null
 
-        return @user().key('/displayName').set(_newName).then (result)->
+        return @_user().key('/displayName').set(_newName).then (result)->
 
             store.set('displayname', _newName)
 
             return result.value
 
+    users: ()->
+        return @_room().users.get().then (result)->
+            console.log(result)
 
 
 module.exports = new Hub()

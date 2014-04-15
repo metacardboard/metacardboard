@@ -56,7 +56,30 @@
 	deck = __webpack_require__(2);
 	
 	hub.connect().then(function(val) {
-	  console.log(val);
+	  var userList;
+	  console.log(val.room);
+	  userList = new goinstant.widgets.UserList({
+	    room: val.room,
+	    collapsed: false,
+	    position: 'left'
+	  });
+	  userList.initialize(function(err) {
+	    if (err) {
+	      throw err;
+	    }
+	  });
+	  $('#deck-source').keydown(function(e) {
+	    if (e.keyCode === 13) {
+	      return e.preventDefault();
+	    }
+	  }).keyup(function(e) {
+	    if (e.keyCode === 13) {
+	      return deck.load($(this).val());
+	    }
+	  });
+	  $('#load-deck').click(function(e) {
+	    return deck.load($('#deck-source').val());
+	  });
 	})["catch"](function(err) {
 	  console.log(err);
 	});
@@ -69,17 +92,36 @@
 /* 2 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Deck;
+	var Deck, promise, store;
+	
+	store = __webpack_require__(4);
+	
+	promise = __webpack_require__(5);
 	
 	Deck = (function() {
 	  function Deck() {
-	    this.gist_url = null;
-	    this.list = [];
+	    this.gist_url = store.get('deck_gist_url');
+	    this.list = store.get('deck_list') || [];
 	    this.hash = null;
 	  }
 	
 	  Deck.prototype.load = function(gist_url) {
-	    return console.log('LOOOL');
+	    $.ajax({
+	      url: 'https://api.github.com/gists/' + gist_url,
+	      type: 'GET',
+	      dataType: 'jsonp'
+	    }).success(function(rec) {
+	      var data, file, meta;
+	      meta = rec.meta;
+	      data = rec.data;
+	      if (meta.status !== 200) {
+	        return;
+	      }
+	      file = Object.keys(data.files)[0];
+	      return console.log(data.files[file].content);
+	    }).error(function(e) {
+	      return console.log(e);
+	    });
 	  };
 	
 	  return Deck;
@@ -2556,7 +2598,7 @@
 	    this.connection = null;
 	  }
 	
-	  Hub.prototype.userDefaults = function() {
+	  Hub.prototype._userDefaults = function() {
 	    var userdefaults;
 	    userdefaults = {};
 	    if (this.roomName) {
@@ -2565,27 +2607,27 @@
 	    return userdefaults;
 	  };
 	
-	  Hub.prototype.room = function() {
-	    return connection.room(this.roomName);
+	  Hub.prototype._room = function() {
+	    return this.connection.room(this.roomName);
 	  };
 	
-	  Hub.prototype.user = function() {
-	    return this.room().self();
+	  Hub.prototype._user = function() {
+	    return this._room().self();
 	  };
 	
 	  Hub.prototype.connect = function() {
 	    return goinstant.connect(url, {
-	      user: this.userDefaults()
+	      user: this._userDefaults()
 	    }).then((function(_this) {
 	      return function(result) {
-	        var connection, obj, room;
-	        _this.connection = connection = result.connection;
-	        room = connection.room(_this.roomName);
+	        var obj, room;
+	        _this.connection = result.connection;
+	        room = _this._room();
 	        obj = {};
 	        if (!room.joined()) {
-	          return room.join(_this.userDefaults()).then(function(room, user) {
+	          return room.join(_this._userDefaults()).then(function(room, user) {
 	            _this._displayName = user.displayName;
-	            obj.roomName = _this.roomName;
+	            obj.room = room;
 	            obj.displayName = user.displayName;
 	            return obj;
 	          });
@@ -2594,7 +2636,7 @@
 	          var user;
 	          user = result.value;
 	          _this._displayName = user.displayName;
-	          obj.roomName = _this.roomName;
+	          obj.room = room;
 	          obj.displayName = user.displayName;
 	          return obj;
 	        });
@@ -2604,14 +2646,20 @@
 	
 	  Hub.prototype.displayName = function(_newName) {
 	    if (!!!_newName) {
-	      return this.display_name;
+	      return this._displayName;
 	    }
 	    if (_newName.length <= 0) {
 	      return null;
 	    }
-	    return this.user().key('/displayName').set(_newName).then(function(result) {
+	    return this._user().key('/displayName').set(_newName).then(function(result) {
 	      store.set('displayname', _newName);
 	      return result.value;
+	    });
+	  };
+	
+	  Hub.prototype.users = function() {
+	    return this._room().users.get().then(function(result) {
+	      return console.log(result);
 	    });
 	  };
 	

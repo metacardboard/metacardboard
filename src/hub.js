@@ -13,7 +13,7 @@ Hub = (function() {
     this.connection = null;
   }
 
-  Hub.prototype.userDefaults = function() {
+  Hub.prototype._userDefaults = function() {
     var userdefaults;
     userdefaults = {};
     if (this.roomName) {
@@ -22,27 +22,27 @@ Hub = (function() {
     return userdefaults;
   };
 
-  Hub.prototype.room = function() {
-    return connection.room(this.roomName);
+  Hub.prototype._room = function() {
+    return this.connection.room(this.roomName);
   };
 
-  Hub.prototype.user = function() {
-    return this.room().self();
+  Hub.prototype._user = function() {
+    return this._room().self();
   };
 
   Hub.prototype.connect = function() {
     return goinstant.connect(url, {
-      user: this.userDefaults()
+      user: this._userDefaults()
     }).then((function(_this) {
       return function(result) {
-        var connection, obj, room;
-        _this.connection = connection = result.connection;
-        room = connection.room(_this.roomName);
+        var obj, room;
+        _this.connection = result.connection;
+        room = _this._room();
         obj = {};
         if (!room.joined()) {
-          return room.join(_this.userDefaults()).then(function(room, user) {
+          return room.join(_this._userDefaults()).then(function(room, user) {
             _this._displayName = user.displayName;
-            obj.roomName = _this.roomName;
+            obj.room = room;
             obj.displayName = user.displayName;
             return obj;
           });
@@ -51,7 +51,7 @@ Hub = (function() {
           var user;
           user = result.value;
           _this._displayName = user.displayName;
-          obj.roomName = _this.roomName;
+          obj.room = room;
           obj.displayName = user.displayName;
           return obj;
         });
@@ -61,14 +61,20 @@ Hub = (function() {
 
   Hub.prototype.displayName = function(_newName) {
     if (!!!_newName) {
-      return this.display_name;
+      return this._displayName;
     }
     if (_newName.length <= 0) {
       return null;
     }
-    return this.user().key('/displayName').set(_newName).then(function(result) {
+    return this._user().key('/displayName').set(_newName).then(function(result) {
       store.set('displayname', _newName);
       return result.value;
+    });
+  };
+
+  Hub.prototype.users = function() {
+    return this._room().users.get().then(function(result) {
+      return console.log(result);
     });
   };
 
