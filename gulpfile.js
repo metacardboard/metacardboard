@@ -189,7 +189,12 @@ gulp.task('app', function(callback) {
         .pipe(plumber())
         .pipe(through(function(file, _, cb) {
 
-            jade.render(file.contents.toString('utf8'), {}, function(err, html) {
+            var
+            jade_config = {
+                pretty: true
+            };
+
+            jade.render(file.contents.toString('utf8'), jade_config, function(err, html) {
 
                 if (err)
                     return cb(err);

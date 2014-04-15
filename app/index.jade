@@ -1,39 +1,68 @@
 doctype html
-html
+html(ng-app='')
     head
         link(rel='stylesheet', href='//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css')
         // Optional theme
-        link(rel='stylesheet', href='//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css')
+        //- link(rel='stylesheet', href='//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css')
+
+        link(rel='stylesheet', href='https://cdn.goinstant.net/widgets/user-list/latest/user-list.css')
+
         link(rel='stylesheet', href='./css/app.css')
         // Latest compiled and minified JavaScript
+        script(src='//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js')
+        // script(src='https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0-beta.5/angular.min.js')
         script(src='//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js')
+
+        script(src='https://cdn.goinstant.net/v1/platform.min.js')
+        script(src='https://cdn.goinstant.net/widgets/user-list/latest/user-list.min.js')
+
+
+
+        script(src='../dist/metacardboard.js')
     body
+        #main
+            .container-fluid
+                .row
 
-    .site-wrapper
-      .site-wrapper-inner
-        .cover-container
-          .masthead.clearfix
-            .inner
-              h3.masthead-brand Cover
-              ul.nav.masthead-nav
-                li.active
-                  a(href='#') Home
-                li
-                  a(href='#') Features
-                li
-                  a(href='#') Contact
-          .inner.cover
-            h1.cover-heading Cover your page.
-            p.lead
-              | Cover is a one-page template for building simple and beautiful home pages. Download, edit the text, and add your own fullscreen background photo to make it your own.
-            p.lead
-              a.btn.btn-lg.btn-default(href='#') Learn more
-          .mastfoot
-            .inner
-              p
-                | Cover template for
-                a(href='http://getbootstrap.com') Bootstrap
-                | , by
-                a(href='https://twitter.com/mdo') @mdo
-                | .
+                    .col-md-9
 
+                    .col-md-3
+                        #room
+                            .row
+                                .col-md-6
+                                    b!= 'Current Room:'
+                                .col-md-6
+                                    div#roomname-label
+                            hr
+                            .row
+                                .col-md-8
+                                    input.form-control.input-sm#roomname-input(type='text')
+                                .col-md-4
+                                    button.btn.btn-primary.btn-sm#change-room(type='submit') Change Room
+
+
+
+                        hr
+                        #rules
+                            .row
+                                .col-md-8
+                                    input.form-control.input-sm#rules-source(type='text')
+                                .col-md-4
+                                    button.btn.btn-primary.btn-sm#load-rules(type='submit') Load Rules
+                            #deck-list
+                        hr
+                        #deck
+                            .row
+                                .col-md-8
+                                    input.form-control.input-sm#deck-source(type='text')
+                                .col-md-4
+                                    button.btn.btn-primary.btn-sm#load-deck(type='submit') Load Deck
+                            #deck-list
+
+
+
+
+        //- .Center-Container.is-Inline
+        //-     .Center-Block
+        //-         div
+        //-             != 'hello'

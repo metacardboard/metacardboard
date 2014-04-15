@@ -1,0 +1,27 @@
+2	Azorius Guildgate
+2	Boros Guildgate
+3	Chromanticore
+3	Courser of Kruphix
+2	Dimir Guildgate
+4	Druid's Deliverance
+4	Fog
+2	Golgari Guildgate
+2	Gruul Guildgate
+2	Izzet Guildgate
+3	Maze's End
+2	Orzhov Guildgate
+2	Rakdos Guildgate
+4	Riot Control
+4	Saruli Gatekeepers
+4	Selesnya Guildgate
+4	Sigiled Starfish
+4	Simic Guildgate
+4	Supreme Verdict
+3	Urban Evolution
+
+Sideboard: 
+3	Anger of the Gods
+3	Crackling Perimeter
+3	Detention Sphere
+2	Elixir of Immortality
+4	Negate

@@ -1,1 +1,68 @@
-<!DOCTYPE html><html><head><link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css"><!-- Optional theme--><link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css"><link rel="stylesheet" href="./css/app.css"><!-- Latest compiled and minified JavaScript--><script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script></head><body></body><div class="site-wrapper"><div class="site-wrapper-inner"><div class="cover-container"><div class="masthead clearfix"><div class="inner"><h3 class="masthead-brand">Cover</h3><ul class="nav masthead-nav"><li class="active"><a href="#">Home</a></li><li><a href="#">Features</a></li><li><a href="#">Contact</a></li></ul></div></div><div class="inner cover"><h1 class="cover-heading">Cover your page.</h1><p class="lead">Cover is a one-page template for building simple and beautiful home pages. Download, edit the text, and add your own fullscreen background photo to make it your own.</p><p class="lead"><a href="#" class="btn btn-lg btn-default">Learn more</a></p></div><div class="mastfoot"><div class="inner"><p>Cover template for<a href="http://getbootstrap.com">Bootstrap</a>, by<a href="https://twitter.com/mdo">@mdo</a>.</p></div></div></div></div></div></html>
+<!DOCTYPE html>
+<html ng-app="">
+  <head>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+    <!-- Optional theme-->
+    <link rel="stylesheet" href="https://cdn.goinstant.net/widgets/user-list/latest/user-list.css">
+    <link rel="stylesheet" href="./css/app.css">
+    <!-- Latest compiled and minified JavaScript-->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <!-- script(src='https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0-beta.5/angular.min.js')-->
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+    <script src="https://cdn.goinstant.net/v1/platform.min.js"></script>
+    <script src="https://cdn.goinstant.net/widgets/user-list/latest/user-list.min.js"></script>
+    <script src="../dist/metacardboard.js"></script>
+  </head>
+  <body>
+    <div id="main">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-9"></div>
+          <div class="col-md-3">
+            <div id="room">
+              <div class="row">
+                <div class="col-md-6"><b>Current Room:</b></div>
+                <div class="col-md-6">
+                  <div id="roomname-label"></div>
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-md-8">
+                  <input id="roomname-input" type="text" class="form-control input-sm">
+                </div>
+                <div class="col-md-4">
+                  <button id="change-room" type="submit" class="btn btn-primary btn-sm">Change Room</button>
+                </div>
+              </div>
+            </div>
+            <hr>
+            <div id="rules">
+              <div class="row">
+                <div class="col-md-8">
+                  <input id="rules-source" type="text" class="form-control input-sm">
+                </div>
+                <div class="col-md-4">
+                  <button id="load-rules" type="submit" class="btn btn-primary btn-sm">Load Rules</button>
+                </div>
+              </div>
+              <div id="deck-list"></div>
+            </div>
+            <hr>
+            <div id="deck">
+              <div class="row">
+                <div class="col-md-8">
+                  <input id="deck-source" type="text" class="form-control input-sm">
+                </div>
+                <div class="col-md-4">
+                  <button id="load-deck" type="submit" class="btn btn-primary btn-sm">Load Deck</button>
+                </div>
+              </div>
+              <div id="deck-list"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

@@ -10,8 +10,8 @@ module.exports = {
     output: {
         path: path.join(__dirname, "dist"),
         filename: "metacardboard.js",
-        library: "metacardboard",
-        libraryTarget: "umd"
+        // library: "metacardboard",
+        // libraryTarget: "umd"
     },
     watch: true,
     watchDelay: 500,
