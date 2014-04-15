@@ -1,16 +1,15 @@
-var box, bus, deck, events, store;
+var bus, deck, events, hub, store;
 
 events = require('events');
 
 store = require('store');
 
-box = require('./connect.coffee');
+hub = require('./hub.coffee');
 
 deck = require('./deck.coffee');
 
-box.connect().then(function(val) {
+hub.connect().then(function(val) {
   console.log(val);
-  console.log(box.displayName('poop'));
 })["catch"](function(err) {
   console.log(err);
 });

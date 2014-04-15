@@ -5,13 +5,13 @@ events = require('events')
 store = require('store')
 
 # app
-box = require('./connect.coffee')
+hub = require('./hub.coffee')
 deck = require('./deck.coffee')
 
-box.connect().then (val)->
+hub.connect().then (val)->
     console.log(val)
 
-    console.log(box.displayName('poop'))
+    # console.log(box.displayName('poop'))
     return
 
 .catch (err) ->

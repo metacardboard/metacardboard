@@ -3,7 +3,7 @@ promise = require('when')
 
 url = 'https://goinstant.net/dashed/metacardboard'
 
-class Connect
+class Hub
     constructor: ()->
 
         @roomName = store.get('roomname') or 'lobby'
@@ -28,9 +28,10 @@ class Connect
     connect: ()->
 
         return goinstant.connect(url, {user: @userDefaults()})
-            .then (res)=>
+            .then (result)=>
 
-                @connection = connection = res.connection
+
+                @connection = connection = result.connection
 
                 room = connection.room(@roomName)
                 obj = {}
@@ -40,8 +41,6 @@ class Connect
 
                         @_displayName = user.displayName
 
-                        # TODO: remove
-                        # console.log(val.displayName)
 
                         obj.roomName = @roomName
                         obj.displayName = user.displayName
@@ -55,6 +54,9 @@ class Connect
 
                     @_displayName = user.displayName
 
+
+
+                    # obj.users =
                     obj.roomName = @roomName
                     obj.displayName = user.displayName
 
@@ -83,4 +85,4 @@ class Connect
 
 
 
-module.exports = new Connect()
+module.exports = new Hub()

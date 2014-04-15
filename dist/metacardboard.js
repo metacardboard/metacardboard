@@ -45,19 +45,18 @@
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var box, bus, deck, events, store;
+	var bus, deck, events, hub, store;
 	
 	events = __webpack_require__(3);
 	
 	store = __webpack_require__(4);
 	
-	box = __webpack_require__(1);
+	hub = __webpack_require__(21);
 	
 	deck = __webpack_require__(2);
 	
-	box.connect().then(function(val) {
+	hub.connect().then(function(val) {
 	  console.log(val);
-	  console.log(box.displayName('poop'));
 	})["catch"](function(err) {
 	  console.log(err);
 	});
@@ -66,91 +65,7 @@
 
 
 /***/ },
-/* 1 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var Connect, promise, store, url;
-	
-	store = __webpack_require__(4);
-	
-	promise = __webpack_require__(5);
-	
-	url = 'https://goinstant.net/dashed/metacardboard';
-	
-	Connect = (function() {
-	  function Connect() {
-	    this.roomName = store.get('roomname') || 'lobby';
-	    this._displayName = store.get('displayname');
-	    this.connection = null;
-	  }
-	
-	  Connect.prototype.userDefaults = function() {
-	    var userdefaults;
-	    userdefaults = {};
-	    if (this.roomName) {
-	      userdefaults.displayName = this.roomName;
-	    }
-	    return userdefaults;
-	  };
-	
-	  Connect.prototype.room = function() {
-	    return connection.room(this.roomName);
-	  };
-	
-	  Connect.prototype.user = function() {
-	    return this.room().self();
-	  };
-	
-	  Connect.prototype.connect = function() {
-	    return goinstant.connect(url, {
-	      user: this.userDefaults()
-	    }).then((function(_this) {
-	      return function(res) {
-	        var connection, obj, room;
-	        _this.connection = connection = res.connection;
-	        room = connection.room(_this.roomName);
-	        obj = {};
-	        if (!room.joined()) {
-	          return room.join(_this.userDefaults()).then(function(room, user) {
-	            _this._displayName = user.displayName;
-	            obj.roomName = _this.roomName;
-	            obj.displayName = user.displayName;
-	            return obj;
-	          });
-	        }
-	        return room.self().get().then(function(result) {
-	          var user;
-	          user = result.value;
-	          _this._displayName = user.displayName;
-	          obj.roomName = _this.roomName;
-	          obj.displayName = user.displayName;
-	          return obj;
-	        });
-	      };
-	    })(this));
-	  };
-	
-	  Connect.prototype.displayName = function(_newName) {
-	    if (!!!_newName) {
-	      return this.display_name;
-	    }
-	    if (_newName.length <= 0) {
-	      return null;
-	    }
-	    return this.user().key('/displayName').set(_newName).then(function(result) {
-	      store.set('displayname', _newName);
-	      return result.value;
-	    });
-	  };
-	
-	  return Connect;
-	
-	})();
-	
-	module.exports = new Connect();
-
-
-/***/ },
+/* 1 */,
 /* 2 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -2620,6 +2535,91 @@
 	process.chdir = function (dir) {
 	    throw new Error('process.chdir is not supported');
 	};
+
+
+/***/ },
+/* 21 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Hub, promise, store, url;
+	
+	store = __webpack_require__(4);
+	
+	promise = __webpack_require__(5);
+	
+	url = 'https://goinstant.net/dashed/metacardboard';
+	
+	Hub = (function() {
+	  function Hub() {
+	    this.roomName = store.get('roomname') || 'lobby';
+	    this._displayName = store.get('displayname');
+	    this.connection = null;
+	  }
+	
+	  Hub.prototype.userDefaults = function() {
+	    var userdefaults;
+	    userdefaults = {};
+	    if (this.roomName) {
+	      userdefaults.displayName = this.roomName;
+	    }
+	    return userdefaults;
+	  };
+	
+	  Hub.prototype.room = function() {
+	    return connection.room(this.roomName);
+	  };
+	
+	  Hub.prototype.user = function() {
+	    return this.room().self();
+	  };
+	
+	  Hub.prototype.connect = function() {
+	    return goinstant.connect(url, {
+	      user: this.userDefaults()
+	    }).then((function(_this) {
+	      return function(result) {
+	        var connection, obj, room;
+	        _this.connection = connection = result.connection;
+	        room = connection.room(_this.roomName);
+	        obj = {};
+	        if (!room.joined()) {
+	          return room.join(_this.userDefaults()).then(function(room, user) {
+	            _this._displayName = user.displayName;
+	            obj.roomName = _this.roomName;
+	            obj.displayName = user.displayName;
+	            return obj;
+	          });
+	        }
+	        return room.self().get().then(function(result) {
+	          var user;
+	          user = result.value;
+	          _this._displayName = user.displayName;
+	          obj.roomName = _this.roomName;
+	          obj.displayName = user.displayName;
+	          return obj;
+	        });
+	      };
+	    })(this));
+	  };
+	
+	  Hub.prototype.displayName = function(_newName) {
+	    if (!!!_newName) {
+	      return this.display_name;
+	    }
+	    if (_newName.length <= 0) {
+	      return null;
+	    }
+	    return this.user().key('/displayName').set(_newName).then(function(result) {
+	      store.set('displayname', _newName);
+	      return result.value;
+	    });
+	  };
+	
+	  return Hub;
+	
+	})();
+	
+	module.exports = new Hub();
 
 
 /***/ }

@@ -1,4 +1,4 @@
-var Connect, promise, store, url;
+var Hub, promise, store, url;
 
 store = require('store');
 
@@ -6,14 +6,14 @@ promise = require('when');
 
 url = 'https://goinstant.net/dashed/metacardboard';
 
-Connect = (function() {
-  function Connect() {
+Hub = (function() {
+  function Hub() {
     this.roomName = store.get('roomname') || 'lobby';
     this._displayName = store.get('displayname');
     this.connection = null;
   }
 
-  Connect.prototype.userDefaults = function() {
+  Hub.prototype.userDefaults = function() {
     var userdefaults;
     userdefaults = {};
     if (this.roomName) {
@@ -22,21 +22,21 @@ Connect = (function() {
     return userdefaults;
   };
 
-  Connect.prototype.room = function() {
+  Hub.prototype.room = function() {
     return connection.room(this.roomName);
   };
 
-  Connect.prototype.user = function() {
+  Hub.prototype.user = function() {
     return this.room().self();
   };
 
-  Connect.prototype.connect = function() {
+  Hub.prototype.connect = function() {
     return goinstant.connect(url, {
       user: this.userDefaults()
     }).then((function(_this) {
-      return function(res) {
+      return function(result) {
         var connection, obj, room;
-        _this.connection = connection = res.connection;
+        _this.connection = connection = result.connection;
         room = connection.room(_this.roomName);
         obj = {};
         if (!room.joined()) {
@@ -59,7 +59,7 @@ Connect = (function() {
     })(this));
   };
 
-  Connect.prototype.displayName = function(_newName) {
+  Hub.prototype.displayName = function(_newName) {
     if (!!!_newName) {
       return this.display_name;
     }
@@ -72,8 +72,8 @@ Connect = (function() {
     });
   };
 
-  return Connect;
+  return Hub;
 
 })();
 
-module.exports = new Connect();
+module.exports = new Hub();
