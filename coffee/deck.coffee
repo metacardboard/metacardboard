@@ -1,6 +1,4 @@
-class deck
-
-
+class Deck
 
     constructor: ()->
         @gist_url = null
@@ -11,6 +9,5 @@ class deck
 
         console.log('LOOOL')
 
-console.log(goinstant);
 
-module.exports = new deck()
+module.exports = new Deck()
